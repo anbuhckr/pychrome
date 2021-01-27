@@ -30,7 +30,7 @@ setup(
     long_description=readme,
     author="fate0",
     author_email='fate0@fatezero.org',
-    url='https://github.com/anbuhckr/rbchrome',
+    url='https://github.com/anbuhckr/pychrome',
     packages=find_packages(),
     package_dir={},    
     include_package_data=True,
