@@ -10,8 +10,7 @@ import socket
 from tempfile import TemporaryDirectory
 
 class Service(object):
-    def __init__(self, port=0, env=None, start_error_message="",
-                rb_options=[], headless=False):
+    def __init__(self, port=0, env=None, start_error_message="", rb_options=[]):
         if 'nt' in os.name:
             self.path = find('chrome.exe')
         else:
@@ -21,7 +20,7 @@ class Service(object):
         if self.port == 0:
             self.port = free_port()           
         self.service_args = rb_options       
-        self.service_args += ['about:blank', '--disable-background-networking',
+        self.service_args += ['about:blank', '--headless', '--disable-background-networking',
                                 '--disable-client-side-phishing-detection',
                                 '--disable-default-apps', '--disable-hang-monitor',
                                 '--disable-infobars', '--disable-popup-blocking',
@@ -30,8 +29,7 @@ class Service(object):
                                 '--ignore-ssl-errors', '--ignore-certificate-errors', 
                                 '--metrics-recording-only', '--use-mock-keychain', 
                                 '--user-data-dir='  + self.tmpdir.name]            
-        self.service_args += ['--remote-debugging-port=' + str(self.port)]
-        self.service_args += ['--headless'] if headless else []
+        self.service_args += ['--remote-debugging-port=' + str(self.port)]        
         self.start_error_message = start_error_message        
         self.env = env or os.environ                 
         self.start()
