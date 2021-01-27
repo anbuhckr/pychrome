@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import requests
 
 from .tab import Tab
+from .service import Service
 
 
 __all__ = ["Browser"]
@@ -14,9 +15,12 @@ __all__ = ["Browser"]
 class Browser(object):
     _all_tabs = {}
 
-    def __init__(self, url="http://127.0.0.1:9222"):
+    def __init__(self, url=None, *args, **kwargs):
+        self.service = None        
+        if not url:            
+            self.service = Service(*args, **kwargs)
+            url = self.service.url
         self.dev_url = url
-
         if self.dev_url not in self._all_tabs:
             self._tabs = self._all_tabs[self.dev_url] = {}
         else:
@@ -35,30 +39,25 @@ class Browser(object):
         for tab_json in rp.json():
             if tab_json['type'] != 'page':  # pragma: no cover
                 continue
-
             if tab_json['id'] in self._tabs and self._tabs[tab_json['id']].status != Tab.status_stopped:
                 tabs_map[tab_json['id']] = self._tabs[tab_json['id']]
             else:
                 tabs_map[tab_json['id']] = Tab(**tab_json)
-
         self._tabs = tabs_map
         return list(self._tabs.values())
 
     def activate_tab(self, tab_id, timeout=None):
         if isinstance(tab_id, Tab):
             tab_id = tab_id.id
-
         rp = requests.get("%s/json/activate/%s" % (self.dev_url, tab_id), timeout=timeout)
         return rp.text
 
     def close_tab(self, tab_id, timeout=None):
         if isinstance(tab_id, Tab):
             tab_id = tab_id.id
-
         tab = self._tabs.pop(tab_id, None)
         if tab and tab.status == Tab.status_started:  # pragma: no cover
             tab.stop()
-
         rp = requests.get("%s/json/close/%s" % (self.dev_url, tab_id), timeout=timeout)
         return rp.text
 
