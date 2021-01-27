@@ -64,6 +64,9 @@ class Browser(object):
     def version(self, timeout=None):
         rp = requests.get("%s/json/version" % self.dev_url, json=True, timeout=timeout)
         return rp.json()
+    
+    def stop(self):       
+        self.service.stop()
 
     def __str__(self):
         return '<Browser %s>' % self.dev_url
