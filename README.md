@@ -30,7 +30,7 @@ $ pip install -U pychrome
 or from GitHub:
 
 ```
-$ pip install -U git+https://github.com/anbu/pychrome.git
+$ pip install -U git+https://github.com/anbuhckr/pychrome.git
 ```
 
 or from source:
