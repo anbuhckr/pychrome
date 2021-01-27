@@ -30,14 +30,9 @@ setup(
     long_description=readme,
     author="fate0",
     author_email='fate0@fatezero.org',
-    url='https://github.com/fate0/pychrome',
+    url='https://github.com/anbuhckr/rbchrome',
     packages=find_packages(),
-    package_dir={},
-    entry_points={
-        'console_scripts': [
-            'pychrome=pychrome.cli:main'
-        ]
-    },
+    package_dir={},    
     include_package_data=True,
     install_requires=requirements,
     license="BSD license",
